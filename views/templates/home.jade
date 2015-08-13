@@ -1,0 +1,18 @@
+h1 proxyShop
+
+//- Print the currently logged-in user's name
+//- h4 Welcome, #{user.username}!
+
+//- Give users a link to log out of their account
+p: a(href="/auth/logout") Log out
+
+div
+	form(name="frm" ng-submit="addItem()")
+		input(type=text name="newListItem" ng-model="newListItem" required)
+		button(type="submit" ng-disabled="frm.$invalid") Add Item
+	ol#claimedItems
+		li(ng-repeat="item in listItems")
+			input(type="checkbox" ng-model="item.claimed")
+			span(ng-class="{'claimed':item.claimed}") {{item.itemName}}
+
+	button(ng-click="clearClaimed()") Clear Claimed Item(s)

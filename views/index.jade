@@ -1,15 +1,4 @@
 extends layout
 
 block content
-	h1 proxyShop
-
-	div(ng-controller="listController")
-		form(name="frm" ng-submit="addItem()")
-			input(type=text name="newListItem" ng-model="newListItem" required)
-			button(type="submit" ng-disabled="frm.$invalid") Add Item
-		ol#claimedItems
-			li(ng-repeat="item in listItems")
-				input(type="checkbox" ng-model="item.claimed")
-				span(ng-class="{'claimed':item.claimed}") {{item.itemName}}
-
-		button(ng-click="clearClaimed()") Clear Claimed Item(s)
+	div(ng-view)
