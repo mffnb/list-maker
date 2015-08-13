@@ -6,16 +6,24 @@ List.config(function($routeProvider){
 				templateUrl	: '/template/home',
 				controller  : 'listController'
 		})
-		.when('', {
+		.when('/persons', {
 				templateUrl	: '/template/persons',
 				controller  : 'personsController'
 		})
+
+		.when('/login', {
+				templateUrl	: '/template/login',
+				controller  : 'loginController'
+		})
 })
+List.controller('loginController', ['$scope', function($scope){
+console.log('hello login')
+}])
+
 List.controller('listController', ['$scope', function($scope){
 	$scope.listItems = [
 		{
 			'itemName' : 'Blueberries',
-			//'itemName' : 'View UI',
 			'claimed' : false
 		}
 	]
