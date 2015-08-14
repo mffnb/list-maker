@@ -2,22 +2,38 @@ var List = angular.module('list', ["ngResource", "ngRoute"])
 
 List.config(function($routeProvider){
 	$routeProvider
+		.when('/login', {
+				templateUrl	: '/template/login',
+				controller  : 'loginController'
+		})		
 		.when('/', {
 				templateUrl	: '/template/home',
 				controller  : 'listController'
 		})
-		.when('/persons', {
-				templateUrl	: '/template/persons',
-				controller  : 'personsController'
-		})
-
-		.when('/login', {
-				templateUrl	: '/template/login',
-				controller  : 'loginController'
+		.when('/user', {
+				templateUrl	: '/template/user',
+				controller  : 'userController'
 		})
 })
-List.controller('loginController', ['$scope', function($scope){
-console.log('hello login')
+
+
+
+
+
+List.controller('loginController', ['$scope', '$http', function($scope, $http){
+	$scope.userLogin = function(){
+		console.log('login!', $scope.loginUser)
+		$http.post('/auth/login', $scope.loginUser).then(function(returnData){
+			// $scope.loginUser = {}
+			console.log(returnData)
+		})
+	}
+	$scope.userSignup = function(){
+		console.log('signup!', $scope.signupUser)
+		$http.post('/auth/signup', $scope.signupUser).then(function(returnData){
+			console.log(returnData)
+		})
+	}		
 }])
 
 List.controller('listController', ['$scope', function($scope){
@@ -42,18 +58,24 @@ List.controller('listController', ['$scope', function($scope){
 			if(!item.claimed){
 				return item
 			}
-
-
-
 		})
 		// console.log('fileredItems ', $scope.listItems)
 		// console.log('fileredItems ', $scope.clearClaimed)
 	}
+}]);
+
+List.controller('userController', ['$scope', function($scope){
+	$scope.listItems = [
+		{
+			'' : '',
+			'' : false
+		}
+	]
 
 
 }]);
 
-//.personController
+	// Tuesday to do:
 // see data model whiteboard photo 
 // set up dynamic routing
 // persist user list to db

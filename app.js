@@ -37,6 +37,7 @@ app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 
 // Add in the cookieParser and flash middleware so we can
@@ -58,9 +59,6 @@ app.use(passport.initialize());
 
 // Hook in the passport session management into the middleware chain.
 app.use(passport.session());
-
-// Our get request for viewing the login page
-app.get('/auth/login', authenticationController.login);
 
 // Post received from submitting the login form
 app.post('/auth/login', authenticationController.processLogin);

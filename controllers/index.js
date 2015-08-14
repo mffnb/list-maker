@@ -1,11 +1,3 @@
-// var indexController = {
-// 	index: function(req, res) {
-// 		res.render('index');
-// 	}
-// };
-
-// module.exports = indexController;
-
 // Simple index controller
 var indexController = {
 
@@ -21,7 +13,10 @@ var indexController = {
     });
   },
   templates: function(req, res){
-    res.render('templates/' + req.params.templateName )
+    res.render('templates/' + req.params.templateName, {
+    user: req.user  
+    } )
+    // res.send(req.user)
   }
 };
 

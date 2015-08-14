@@ -22,7 +22,7 @@ var performLogin = function(req, res, next, user){
     if(err) return next(err);
 
     // Otherwise, send the user to the homepage.
-    return res.redirect('/');
+    return res.send(req.user);
   });
 };
 
@@ -63,8 +63,7 @@ var authenticationController = {
       // which will be read and used in the "login" handler above and then redirect
       // to that handler.
       if(!user) {
-        req.flash('error', 'Error logging in. Please try again.');
-        return res.redirect('/auth/login');
+        return res.send({err: 'no one by that name here, friend'});
       }
       
       // If we make it this far, the user has correctly authenticated with passport
@@ -131,7 +130,7 @@ var authenticationController = {
     req.logout();
 
     // Redirect back to the login page
-    res.redirect('/auth/login');
+    res.redirect('/template/login');
   }
 };
 

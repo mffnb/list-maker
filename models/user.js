@@ -23,6 +23,11 @@ var userSchema = mongoose.Schema({
     type: String,
     required: true
   }
+  // lists: {
+  //   type: 
+  //   [{mongoose.Schema.ObjectID, 
+  //                     ref:'list'}]
+  // }
 });
 
 /**
