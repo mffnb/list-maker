@@ -79,7 +79,9 @@ app.get('/auth/logout', authenticationController.logout);
 // authentication before access is allowed.
 app.get('/', indexController.index);
 app.get('/template/:templateName', indexController.templates);
-
+app.get('/api/me', function(req, res){
+	res.send(req.user);
+})
 
 var server = app.listen(8420, function() {
 	console.log('Express server listening on port ' + server.address().port);

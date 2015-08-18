@@ -1,31 +1,32 @@
-var List = angular.module('list', ["ngResource", "ngRoute"])
+var ListApp = angular.module('list', ["ngResource", "ngRoute"])
 
-List.config(function($routeProvider){
+ListApp.config(function($routeProvider){
 	$routeProvider
 		.when('/login', {
 				templateUrl	: '/template/login',
 				controller  : 'loginController'
-		})		
+		})
 		.when('/', {
 				templateUrl	: '/template/home',
-				controller  : 'listController'
+				controller  : 'homeController'
 		})
 		.when('/user', {
 				templateUrl	: '/template/user',
 				controller  : 'userController'
 		})
+		.when('/list', {
+				templateUrl : '/template/list',
+				controller 	: 'listController'
+		})
 })
 
-
-
-
-
-List.controller('loginController', ['$scope', '$http', function($scope, $http){
+ListApp.controller('loginController', ['$scope', '$http', '$location', function($scope, $http, $location){
 	$scope.userLogin = function(){
 		console.log('login!', $scope.loginUser)
 		$http.post('/auth/login', $scope.loginUser).then(function(returnData){
 			// $scope.loginUser = {}
 			console.log(returnData)
+			$location.url('/user');
 		})
 	}
 	$scope.userSignup = function(){
@@ -36,7 +37,7 @@ List.controller('loginController', ['$scope', '$http', function($scope, $http){
 	}		
 }])
 
-List.controller('listController', ['$scope', function($scope){
+ListApp.controller('listController', ['$scope', function($scope){
 	$scope.listItems = [
 		{
 			'itemName' : 'Blueberries',
@@ -64,7 +65,7 @@ List.controller('listController', ['$scope', function($scope){
 	}
 }]);
 
-List.controller('userController', ['$scope', function($scope){
+ListApp.controller('userController', ['$scope', function($scope){
 	$scope.listItems = [
 		{
 			'' : '',
@@ -75,6 +76,20 @@ List.controller('userController', ['$scope', function($scope){
 
 }]);
 
+ListApp.controller('homeController', ['$scope', '$http', '$location', function($scope, $http, $location){
+	$http.get('/api/me').then(function(returnData){
+		console.log(returnData);
+		if (!returnData.data){
+			$location.url('/login');
+		}
+		else {
+			$scope.user = returnData.data;
+		}
+	})
+	
+
+
+}]);
 	// Tuesday to do:
 // see data model whiteboard photo 
 // set up dynamic routing

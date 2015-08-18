@@ -1,4 +1,4 @@
-// Simple index controller
+// Simple index controller defined
 var indexController = {
 
   // Handle incoming requests for the '/' route
