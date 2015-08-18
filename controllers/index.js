@@ -1,3 +1,4 @@
+var User = require('../models/user.js');
 // Simple index controller defined
 var indexController = {
 
@@ -17,6 +18,26 @@ var indexController = {
     user: req.user  
     } )
     // res.send(req.user)
+  },
+  updateList: function(req, res){
+    console.log('req body:', req.body);
+    User.findOne({_id: req.user._id}, function(err, document){
+      if (err){
+        console.log(err);
+      }
+      document.lists = req.body.lists;
+      document.markModified('lists');
+      document.save(function(err, savedDoc){
+        console.log('err', err);
+        res.send(savedDoc)
+      });
+      console.log('docs', document); 
+    });
+  },
+  allUsers: function(req, res){
+    User.find({}, function(err, users){
+      res.send(users)
+    })
   }
 };
 

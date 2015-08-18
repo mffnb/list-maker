@@ -20,12 +20,16 @@ ListApp.config(function($routeProvider){
 		})
 })
 
-ListApp.controller('loginController', ['$scope', '$http', '$location', function($scope, $http, $location){
+ListApp.controller('loginController', ['$scope', '$http', '$rootScope', '$location', function($scope, $http, $rootScope, $location){
+	$scope.loginUser = {};
+	$scope.loginUser.username = 'mcf';
+	$scope.loginUser.password = 'test';
 	$scope.userLogin = function(){
 		console.log('login!', $scope.loginUser)
 		$http.post('/auth/login', $scope.loginUser).then(function(returnData){
 			// $scope.loginUser = {}
 			console.log(returnData)
+			$rootScope.user = returnData.data;
 			$location.url('/user');
 		})
 	}
@@ -33,26 +37,21 @@ ListApp.controller('loginController', ['$scope', '$http', '$location', function(
 		console.log('signup!', $scope.signupUser)
 		$http.post('/auth/signup', $scope.signupUser).then(function(returnData){
 			console.log(returnData)
+			$rootScope.user = returnData.data;
 		})
 	}		
 }])
 
-ListApp.controller('listController', ['$scope', function($scope){
+ListApp.controller('listController',  ['$scope', '$rootScope', function($scope, $rootScope){
+	// $scope.user = $rootScope.user;
 	$scope.listItems = [
 		{
-			'itemName' : 'Blueberries',
-			'claimed' : false
+			'itemName' 	: 'Freeze Dried Blueberries',
+			'claimed' 	: false,
+			'storeName'	: "Trader Joe's"
 		}
 	]
 
-	$scope.addItem = function(){
-		$scope.listItems.push({
-			'itemName': $scope.newListItem, 
-			'claimed': false
-		})
-		//console.log('!', $scope.newListItem)
-		$scope.newListItem = ''
-	}
 
 	$scope.clearClaimed = function(){
 		$scope.listItems = $scope.listItems.filter(function(item){
@@ -65,20 +64,40 @@ ListApp.controller('listController', ['$scope', function($scope){
 	}
 }]);
 
-ListApp.controller('userController', ['$scope', function($scope){
-	$scope.listItems = [
-		{
-			'' : '',
-			'' : false
-		}
-	]
+ListApp.controller('userController', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http){
+	$http.get('/api/me').then(function(returnData){
+		$scope.user = returnData.data
+		console.log($scope.user);
+	});
+	// $scope.user = $rootScope.user;
+	// $scope.listItems = []
+	$scope.addItem = function(){
+		$scope.user.lists.push({
+			'itemName': $scope.newListItem, 
+			'storeName': $scope.newStoreName,
+			'claimed': false
+		});
+		$http.post('/update-list', $scope.user).then(function(returnData){
+			console.log(returnData)
+		});
+		//console.log('!', $scope.newListItem)
+		$scope.newListItem = ''
+
+	}
+
+	$http.get('/api/allUsers')
+	.then(function(response){
+		console.log(response)
+		$scope.allUsers = response.data.lists
+	})
+
 
 
 }]);
 
 ListApp.controller('homeController', ['$scope', '$http', '$location', function($scope, $http, $location){
 	$http.get('/api/me').then(function(returnData){
-		console.log(returnData);
+		// console.log(returnData);
 		if (!returnData.data){
 			$location.url('/login');
 		}

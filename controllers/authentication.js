@@ -19,7 +19,10 @@ var performLogin = function(req, res, next, user){
   // logged in.
   req.login(user, function(err){
     // If there was an error, allow execution to move to the next middleware
-    if(err) return next(err);
+    if(err){
+      console.log('err', err)  
+      return next(err);
+    } 
 
     // Otherwise, send the user to the homepage.
     return res.send(req.user);
@@ -63,7 +66,7 @@ var authenticationController = {
       // which will be read and used in the "login" handler above and then redirect
       // to that handler.
       if(!user) {
-        return res.send({err: 'no one by that name here, friend'});
+        return res.send({err: 'Please sign up... no one by that name here, friend. '});
       }
       
       // If we make it this far, the user has correctly authenticated with passport
@@ -115,7 +118,7 @@ var authenticationController = {
         // Flash the message and redirect to the login view to
         // show it.
         req.flash('error', errorMessage);
-        return res.redirect('/auth/login');
+        return res.redirect('/');
       }
 
       // If we make it this far, we are ready to log the user in.

@@ -1,14 +1,20 @@
-h1 My lists
-username
 p: a(href="/auth/logout") Log out
+h1 My proxyShop list: {{user.username}}
 
 div
-	form(name="frm" ng-submit="addItem()")
-		input(type=text name="newListItem" ng-model="newListItem" required)
-		button(type="submit" ng-disabled="frm.$invalid") Add Item
 	ol#claimedItems
-		li(ng-repeat="item in listItems")
+		li(ng-repeat="item in user.lists")
 			input(type="checkbox" ng-model="item.claimed")
 			span(ng-class="{'claimed':item.claimed}") {{item.itemName}}
+	form(name="frm" ng-submit="addItem()")
+		input(type=text name="newListItem" ng-model="newListItem" required placeholder="enter item to add")
+		input(type=text name="newStoreName" ng-model="newStoreName" placeholder="enter name of store")
+		button(type="submit" ng-disabled="frm.$invalid") Add Item to My List
+	
+	
 
 	button(ng-click="clearClaimed()") Clear Claimed Item(s)
+
+	div(ng-repeat="option in allUsers")
+		a(href="")
+			p {{option.storeName}}

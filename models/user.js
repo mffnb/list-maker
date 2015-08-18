@@ -22,12 +22,14 @@ var userSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
-  // lists: {
-  //   type: 
-  //   [{mongoose.Schema.ObjectID, 
-  //                     ref:'list'}]
-  // }
+  },
+
+  lists:[
+    { itemName: String, 
+      claimed: Boolean, 
+      storeName: String
+    }
+  ]
 });
 
 /**

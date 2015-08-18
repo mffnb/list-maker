@@ -69,6 +69,8 @@ app.post('/auth/signup', authenticationController.processSignup);
 // Any requests to log out can be handled at this url
 app.get('/auth/logout', authenticationController.logout);
 
+app.post('/update-list', indexController.updateList);
+
 // ***** IMPORTANT ***** //
 // By including this middleware (defined in our config/passport.js module.exports),
 // We can prevent unauthorized access to any route handler defined after this call
@@ -78,8 +80,10 @@ app.get('/auth/logout', authenticationController.logout);
 // Because this route occurs after the ensureAuthenticated middleware, it will require
 // authentication before access is allowed.
 app.get('/', indexController.index);
+app.get('/api/allUsers', indexController.allUsers);
 app.get('/template/:templateName', indexController.templates);
 app.get('/api/me', function(req, res){
+	// console.log(req.user)
 	res.send(req.user);
 })
 
