@@ -21,14 +21,14 @@ h2  Let's get proxyShop 'n!
 //- ng-model for handling existing user logins.
 div Existing Users
 	form(name="loggin" ng-submit="userLogin()")
-		input(type=text name="username" ng-model="loginUser.username" required)
-		input(type=text name="password" ng-model="loginUser.password" required)
+		input(type=text name="username" ng-model="loginUser.username" required placeholder="username")
+		input(type=text name="password" ng-model="loginUser.password" required placeholder="password")
 		button(type="submit" ng-disabled="frm.$invalid") Login
 
 //- ng-model for handling existing user logins.
 div Register
 	form(name="signnup" ng-submit="userSignup()")
-		input(type=text name="username" ng-model="signupUser.username" required)
-		input(type=text name="email" ng-model="signupUser.email" required)
-		input(type=text name="password" ng-model="signupUser.password" required)
+		input(type=text name="username" ng-model="signupUser.username" required placeholder="username")
+		input(type=text name="email" ng-model="signupUser.email" required placeholder="email address")
+		input(type=text name="password" ng-model="signupUser.password" required placeholder="password")
 		button(type="submit" ng-disabled="frm.$invalid") Sign me up!

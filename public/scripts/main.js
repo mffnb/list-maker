@@ -67,6 +67,20 @@ ListApp.controller('listController',  ['$scope', '$rootScope', function($scope, 
 ListApp.controller('userController', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http){
 	$http.get('/api/me').then(function(returnData){
 		$scope.user = returnData.data
+		$http.get('/api/allUsers')
+		.then(function(response){
+			console.log(response);
+			$scope.allUsers = response.data;
+			$scope.masterList = _.flatten($scope.allUsers.map(function(user){
+				return user.lists.map(function(item){
+					item.user = user.username;
+					return item;
+				});
+			}))
+			.filter(function(item){
+				return item.user !== $scope.user.username
+			});
+		});		
 		console.log($scope.user);
 	});
 	// $scope.user = $rootScope.user;
@@ -85,15 +99,44 @@ ListApp.controller('userController', ['$scope', '$rootScope', '$http', function(
 
 	}
 
-	$http.get('/api/allUsers')
-	.then(function(response){
-		console.log(response)
-		$scope.allUsers = response.data.lists
-	})
-
-
-
 }]);
+
+
+ListApp.filter('groupByStores', function() {
+	var lastResult = null;
+
+	return function(masterList){
+		var result = _.groupBy(masterList, 'storeName');
+		if (lastResult && _.isEqual(result, lastResult)) {
+			return lastResult;
+		} else {
+			lastResult = result;
+			return lastResult;
+		}
+	}
+});
+
+ListApp.filter('groupByUserName', function() {
+	var lastResults = {};
+	var emptyList = [];
+
+	return function(itemsFromStoreList){
+		if (itemsFromStoreList.length === 0) {
+			return emptyList;
+		}
+
+		var storeName = itemsFromStoreList[0].storeName;
+		var result = _.groupBy(itemsFromStoreList, 'user');
+
+		if (lastResults[storeName] && _.isEqual(result, lastResults[storeName])) {
+			return lastResults[storeName];
+		} else {
+			lastResults[storeName] = result;
+			return lastResults[storeName];
+		}
+	}
+});
+
 
 ListApp.controller('homeController', ['$scope', '$http', '$location', function($scope, $http, $location){
 	$http.get('/api/me').then(function(returnData){

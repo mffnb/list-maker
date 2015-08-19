@@ -10,11 +10,15 @@ div
 		input(type=text name="newListItem" ng-model="newListItem" required placeholder="enter item to add")
 		input(type=text name="newStoreName" ng-model="newStoreName" placeholder="enter name of store")
 		button(type="submit" ng-disabled="frm.$invalid") Add Item to My List
-	
-	
+div
 
+	div(ng-repeat="store in masterList | groupByStores")
+		{{store[0].storeName}}
+		div(ng-repeat="userItemList in store | groupByUserName")
+			{{userItemList[0].user}}
+			div(ng-repeat="item in userItemList")
+				{{item.itemName}}
+
+		ol
+			//- li(ng-repeat="item in store") {{item.itemName}}
 	button(ng-click="clearClaimed()") Clear Claimed Item(s)
-
-	div(ng-repeat="option in allUsers")
-		a(href="")
-			p {{option.storeName}}
