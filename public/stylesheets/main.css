@@ -1,5 +1,9 @@
-.body {
-	margin: 10px;
+body {
+	margin: 1px;
+	background-image: url('../images/bg_dogwalk.jpg');
+  	background-color: transparent;
+  	background-size: contain;
+  	background-repeat: no-repeat;
 }
 
 .claimed {

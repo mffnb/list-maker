@@ -1,6 +1,6 @@
 p: a(href="/auth/logout") Log out
 h1 My proxyShop list: {{user.username}}
-
+body
 div
 	ol#claimedItems
 		li(ng-repeat="item in user.lists")
@@ -12,11 +12,13 @@ div
 		button(type="submit" ng-disabled="frm.$invalid") Add Item to My List
 div
 
-	div(ng-repeat="store in masterList | groupByStores")
+	accordion(ng-repeat="store in masterList | groupByStores" close-others="false")
 		{{store[0].storeName}}
-		div(ng-repeat="userItemList in store | groupByUserName")
-			{{userItemList[0].user}}
+		accordion-group(heading="{{userItemList[0].user}}" ng-repeat="userItemList in store | groupByUserName")
+			ol#claimedItems
 			div(ng-repeat="item in userItemList")
+				input(type="checkbox" ng-model="item.claimed")
+				span(ng-class="{'claimed':item.claimed}")
 				{{item.itemName}}
 
 		ol

@@ -1,4 +1,4 @@
-var ListApp = angular.module('list', ["ngResource", "ngRoute"])
+var ListApp = angular.module('list', ["ngResource", "ngRoute", 'ui.bootstrap'])
 
 ListApp.config(function($routeProvider){
 	$routeProvider
@@ -96,6 +96,7 @@ ListApp.controller('userController', ['$scope', '$rootScope', '$http', function(
 		});
 		//console.log('!', $scope.newListItem)
 		$scope.newListItem = ''
+		$scope.newStoreName = ''
 
 	}
 
@@ -148,8 +149,6 @@ ListApp.controller('homeController', ['$scope', '$http', '$location', function($
 			$scope.user = returnData.data;
 		}
 	})
-	
-
 
 }]);
 	// Tuesday to do:
