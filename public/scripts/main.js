@@ -22,8 +22,8 @@ ListApp.config(function($routeProvider){
 
 ListApp.controller('loginController', ['$scope', '$http', '$rootScope', '$location', function($scope, $http, $rootScope, $location){
 	$scope.loginUser = {};
-	$scope.loginUser.username = 'mcf';
-	$scope.loginUser.password = 'test';
+	// $scope.loginUser.username = 'mcf';
+	// $scope.loginUser.password = 'test';
 	$scope.userLogin = function(){
 		console.log('login!', $scope.loginUser)
 		$http.post('/auth/login', $scope.loginUser).then(function(returnData){
@@ -53,15 +53,16 @@ ListApp.controller('listController',  ['$scope', '$rootScope', function($scope, 
 	]
 
 
-	$scope.clearClaimed = function(){
-		$scope.listItems = $scope.listItems.filter(function(item){
-			if(!item.claimed){
-				return item
-			}
-		})
-		// console.log('fileredItems ', $scope.listItems)
-		// console.log('fileredItems ', $scope.clearClaimed)
-	}
+	// $scope.clearClaimed = function(itemList){
+	// 	console.log('!!!')
+	// 	itemList = itemList.filter(function(item){
+	// 		if(!item.claimed){
+	// 			return item
+	// 		}
+	// 	})
+	// 	// console.log('fileredItems ', $scope.listItems)
+	// 	// console.log('fileredItems ', $scope.clearClaimed)
+	// }
 }]);
 
 ListApp.controller('userController', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http){
@@ -80,9 +81,42 @@ ListApp.controller('userController', ['$scope', '$rootScope', '$http', function(
 			.filter(function(item){
 				return item.user !== $scope.user.username
 			});
+		console.log($scope.masterList);
+
 		});		
-		console.log($scope.user);
 	});
+	$scope.clearClaimedUser = function(){
+		$scope.user.lists = $scope.user.lists.filter(function(item){
+			return !item.claimed
+		})
+		$http.post('/update-list', $scope.user).then(function(returnData){
+			console.log(returnData)
+		});
+	}
+	$scope.clearClaimedMaster = function(){
+		$scope.masterList = $scope.masterList.filter(function(item){
+			return !item.claimed
+		})
+
+		var userGrouped = _.groupBy($scope.masterList, 'user')
+
+		 for (username in userGrouped) {
+		 	var matchedUser = _.find($scope.allUsers, function(user){
+		 		return user.username === username;
+		 	})
+
+		 	if(matchedUser){
+			 	matchedUser.lists = userGrouped[username]
+
+			 	$http.post('/update-list', matchedUser).then(function(returnData){
+					console.log(returnData)
+				});
+			}
+		 }
+
+		// console.log('fileredItems ', $scope.listItems)
+		// console.log('fileredItems ', $scope.clearClaimed)
+	}
 	// $scope.user = $rootScope.user;
 	// $scope.listItems = []
 	$scope.addItem = function(){

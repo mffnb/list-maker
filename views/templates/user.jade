@@ -1,26 +1,44 @@
-p: a(href="/auth/logout") Log out
-h1 My proxyShop list: {{user.username}}
-body
-div
-	ol#claimedItems
-		li(ng-repeat="item in user.lists")
-			input(type="checkbox" ng-model="item.claimed")
-			span(ng-class="{'claimed':item.claimed}") {{item.itemName}}
-	form(name="frm" ng-submit="addItem()")
-		input(type=text name="newListItem" ng-model="newListItem" required placeholder="enter item to add")
-		input(type=text name="newStoreName" ng-model="newStoreName" placeholder="enter name of store")
-		button(type="submit" ng-disabled="frm.$invalid") Add Item to My List
-div
+nav.navbar.navbar-default.navbar-top
+	.container-fluid
+		.navbar-header
+			button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+				span.sr-only Toggle navigation
+				span.icon-bar
+				//- span.icon-bar
+				//- span.icon-bar
+			a.navbar-brand(ng-href='')  proxyShop
+		#bs-example-navbar-collapse-1.collapse.navbar-collapse
+			ul.nav.navbar-nav.navbar-right
+				li
+					a(ng-href="#/login") Logout
+							//- p: a(href="/auth/logout") Log out
+.container
+	.row
+		.col-sm-5
+			h1.whiteText {{user.username}}'s list:
+			div
+				ol.whiteText#claimedItems
+					li(ng-repeat="item in user.lists")
+						input(type="checkbox" ng-model="item.claimed")
+						span.whiteText(ng-class="{'claimed':item.claimed}") {{item.itemName}}
+				form(name="frm" ng-submit="addItem()")
+					input.blackText(type=text name="newListItem" ng-model="newListItem" required placeholder="enter item to add")
+					input.blackText(type=text name="newStoreName" ng-model="newStoreName" placeholder="enter name of store")
+					button.btn-success(type="submit" ng-disabled="frm.$invalid") Add Item
+					button.btn-danger(ng-click="clearClaimedUser()") Remove Item(s)
+		.col-sm-6.col-sm-offset-1					
+			div
+				h1.whiteText neighbor lists:
 
-	accordion(ng-repeat="store in masterList | groupByStores" close-others="false")
-		{{store[0].storeName}}
-		accordion-group(heading="{{userItemList[0].user}}" ng-repeat="userItemList in store | groupByUserName")
-			ol#claimedItems
-			div(ng-repeat="item in userItemList")
-				input(type="checkbox" ng-model="item.claimed")
-				span(ng-class="{'claimed':item.claimed}")
-				{{item.itemName}}
+				accordion(ng-repeat="store in masterList | groupByStores" close-others="false")
+					h5.whiteText{{store[0].storeName}}
+					accordion-group(heading="{{userItemList[0].user}}" ng-repeat="userItemList in store | groupByUserName")
+						ol#claimedItems
+						div(ng-repeat="item in userItemList")
+							input(type="checkbox" ng-model="item.claimed")
+							span(ng-class="{'claimed':item.claimed}")
+							{{item.itemName}}
 
-		ol
-			//- li(ng-repeat="item in store") {{item.itemName}}
-	button(ng-click="clearClaimed()") Clear Claimed Item(s)
+					ol
+						//- li(ng-repeat="item in store") {{item.itemName}}
+				button(ng-click="clearClaimedMaster()") Clear Claimed Item(s)

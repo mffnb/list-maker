@@ -21,7 +21,7 @@ var indexController = {
   },
   updateList: function(req, res){
     console.log('req body:', req.body);
-    User.findOne({_id: req.user._id}, function(err, document){
+    User.findOne({_id: req.body._id}, function(err, document){
       if (err){
         console.log(err);
       }

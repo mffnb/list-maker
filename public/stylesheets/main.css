@@ -1,12 +1,27 @@
 body {
-	margin: 1px;
 	background-image: url('../images/bg_dogwalk.jpg');
   	background-color: transparent;
-  	background-size: contain;
+  	background-size: cover;
   	background-repeat: no-repeat;
+}
+
+.whiteText {
+	color: white;
+}
+
+.transparent {
+	opacity: 0.6;
 }
 
 .claimed {
 	text-decoration: line-through;
 	color: #ccc;
 }
+
+.shadow {
+	text-shadow: 2px 2px 3px black;
+}
+
+/*nav {
+	position: relative;
+}*/
